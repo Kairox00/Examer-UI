@@ -1,5 +1,6 @@
 export type Exam = {
   id: string;
   name: string;
-  questions: string[];
+  numberOfQuestions: number;
+  duration: number;
 };
