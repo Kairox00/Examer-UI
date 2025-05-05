@@ -1,11 +1,16 @@
 import { Box, Grid } from "@mui/material";
 import { useStudent } from "../../features/student-portal/api/get-student";
 import ExamCard from "../../features/student-portal/components/ExamCard";
+import { useError } from "../../stores/ErrorAlertContext";
 
 export default function StudentPortal() {
   const studentQuery = useStudent("b86458b1-53fc-41fc-9acb-84f6710d12d9");
+  const { showError } = useError();
   if (studentQuery.isPending) return <div>Loading...</div>;
-  if (studentQuery.isError) return <div>Error loading student data</div>;
+  if (studentQuery.isError) {
+    showError(studentQuery.error.message);
+    return;
+  }
   const student = studentQuery.data?.data;
   const exams = student.exams;
   return (
