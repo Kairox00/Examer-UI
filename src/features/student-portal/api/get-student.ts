@@ -6,7 +6,7 @@ const getStudent = (studentId: string): Promise<{ data: Student }> => {
   return apiClient.get(`/students/${studentId}`);
 };
 
-export const useStudent = (studentId: string) => {
+export const useStudentQuery = (studentId: string) => {
   const options = queryOptions({
     queryKey: ["student", studentId],
     queryFn: () => getStudent(studentId),

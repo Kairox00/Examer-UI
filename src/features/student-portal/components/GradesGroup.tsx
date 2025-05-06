@@ -10,6 +10,7 @@ import { useError } from "../../../stores/ErrorAlertContext";
 import { useLoading } from "../../../stores/LoadingContext";
 import { Exam } from "../../../types/Exam";
 import { useExamResultsQuery } from "../api/get-exam-results";
+import GradesRow from "./GradesRow";
 
 export default function GradesGroup({
   exams,
@@ -36,21 +37,14 @@ export default function GradesGroup({
       <Table>
         <TableHead>
           <TableRow>
+            <TableCell></TableCell>
             <TableCell>Exam</TableCell>
             <TableCell>Grade</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {exams.map((exam) => (
-            <TableRow key={exam.id}>
-              <TableCell>{exam.name}</TableCell>
-              <TableCell>
-                {
-                  results.find((result) => result.data.examId === exam.id)?.data
-                    .score
-                }
-              </TableCell>
-            </TableRow>
+            <GradesRow key={exam.id} exam={exam} results={results} />
           ))}
         </TableBody>
       </Table>
