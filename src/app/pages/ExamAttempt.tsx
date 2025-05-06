@@ -4,6 +4,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useExamQuestions } from "../../features/exam-attempt/api/get-exam-questions";
 import { useSubmitExam } from "../../features/exam-attempt/api/submit-exam";
 import ActiveQuestion from "../../features/exam-attempt/components/ActiveQuestion";
+import Progress from "../../features/exam-attempt/components/Progress";
 import QuestionsList from "../../features/exam-attempt/components/QuestionsList";
 import TimeLeft from "../../features/exam-attempt/components/TimeLeft";
 import { ExamAttemptContext } from "../../stores/ExamAttemptContext";
@@ -71,7 +72,11 @@ export default function ExamAttempt() {
         <Box width={"30%"}>
           <QuestionsList questions={questions} />
         </Box>
-        <Box width={"70%"} paddingX={10}>
+        <Box width={"70%"} paddingX={10} paddingY={5}>
+          <Progress
+            activeQuestionIndex={activeQuestionIndex}
+            numberOfQuestions={questions.length}
+          />
           <TimeLeft
             startTime={startedAt}
             duration={exam.duration}
