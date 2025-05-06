@@ -32,16 +32,13 @@ const ActiveQuestion = ({
     selectedChoice!,
     {
       onSuccess: () => {
+        setAnswers(question.id, selectedChoice!);
         setSelectedChoice(null);
         handleNextQuestion(question.number!);
       },
     }
   );
-  const { answers, setAnswers } = useContext(ExamAttemptContext);
-
-  const updateAnswers = () => {
-    setAnswers(question.id, selectedChoice!);
-  };
+  const { setAnswers } = useContext(ExamAttemptContext);
 
   if (!examId) return <div>Exam ID not found</div>;
 
@@ -55,11 +52,7 @@ const ActiveQuestion = ({
         <Typography variant="body1">Question {question.number}:</Typography>
         <Typography variant="body1">{question.text}</Typography>
         <FormControl sx={{ width: "100%" }}>
-          <RadioGroup
-            name="radio-buttons-group"
-            sx={{ width: "100%" }}
-            onChange={updateAnswers}
-          >
+          <RadioGroup name="radio-buttons-group" sx={{ width: "100%" }}>
             {choices}
           </RadioGroup>
         </FormControl>

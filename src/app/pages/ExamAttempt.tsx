@@ -37,9 +37,6 @@ export default function ExamAttempt() {
     if (questionNumber !== questions.length) {
       setActiveQuestionIndex(questionNumber);
     }
-    if (Object.values(answers).length === questions.length) {
-      submitExamMutation.mutate();
-    }
   };
 
   const onQuerySuccess = (data: any) => {
@@ -62,12 +59,19 @@ export default function ExamAttempt() {
   if (examQuestionsQuery.isError)
     return <div>Error loading exam questions</div>;
   return (
-    <ExamAttemptContext value={{ answers, setAnswers, setActiveQuestionIndex }}>
+    <ExamAttemptContext
+      value={{
+        answers,
+        setAnswers,
+        setActiveQuestionIndex,
+        activeQuestionIndex,
+      }}
+    >
       <Stack direction={"row"}>
         <Box width={"30%"}>
           <QuestionsList questions={questions} />
         </Box>
-        <Box width={"70%"} paddingRight={10}>
+        <Box width={"70%"} paddingX={10}>
           <TimeLeft
             startTime={startedAt}
             duration={exam.duration}
