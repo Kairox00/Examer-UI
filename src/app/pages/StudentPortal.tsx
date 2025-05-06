@@ -1,28 +1,30 @@
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import { useStudent } from "../../features/student-portal/api/get-student";
-import ExamCard from "../../features/student-portal/components/ExamCard";
+import GradesGroup from "../../features/student-portal/components/GradesGroup";
 import { useError } from "../../stores/ErrorAlertContext";
+import { useLoading } from "../../stores/LoadingContext";
 
 export default function StudentPortal() {
   const studentQuery = useStudent("b86458b1-53fc-41fc-9acb-84f6710d12d9");
   const { showError } = useError();
-  if (studentQuery.isPending) return <div>Loading...</div>;
+  const { showLoading } = useLoading();
   if (studentQuery.isError) {
     showError(studentQuery.error.message);
     return;
   }
+  if (studentQuery.isPending) {
+    showLoading(true);
+    return;
+  }
+  showLoading(false);
+
   const student = studentQuery.data?.data;
   const exams = student.exams;
   return (
     <Box>
       <h1>Student Portal</h1>
-      <Grid container spacing={6}>
-        {exams?.map((exam) => (
-          <Grid key={exam.id}>
-            <ExamCard exam={exam} />
-          </Grid>
-        ))}
-      </Grid>
+      {/* <ExamsGroup exams={exams} /> */}
+      <GradesGroup exams={exams} studentId={student.id} />
     </Box>
   );
 }

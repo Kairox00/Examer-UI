@@ -1,18 +1,23 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GlobalErrorAlert } from "../components/GlobalErrorAlert";
-import { ErrorProvider } from "../stores/ErrorAlertContext";
+import LoadingIndicator from "../components/LoadingIndicator";
+import { ErrorAlertProvider } from "../stores/ErrorAlertContext";
+import { LoadingProvider } from "../stores/LoadingContext";
 import "./App.css";
 import AppRouter from "./router";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({});
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ErrorProvider>
-        <GlobalErrorAlert />
-        <AppRouter />
-      </ErrorProvider>
+      <ErrorAlertProvider>
+        <LoadingProvider>
+          <LoadingIndicator />
+          <GlobalErrorAlert />
+          <AppRouter />
+        </LoadingProvider>
+      </ErrorAlertProvider>
     </QueryClientProvider>
   );
 }

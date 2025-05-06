@@ -18,12 +18,12 @@ const ErrorAlertContext = createContext<ErrorContextType>({
   showError: () => {},
 });
 
-export const ErrorProvider = ({ children }: any) => {
+export const ErrorAlertProvider = ({ children }: any) => {
   const [error, setError] = useState<string | null>(null);
 
   const showError = useCallback((message: string) => {
     setError(message);
-    setTimeout(() => setError(null), 5000); // auto-dismiss after 5 seconds
+    setTimeout(() => setError(null), 5000);
   }, []);
 
   useEffect(() => {
