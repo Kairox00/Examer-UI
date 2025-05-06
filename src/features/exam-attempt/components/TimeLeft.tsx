@@ -13,6 +13,7 @@ export default function TimeLeft({
   submitExamMutation: any;
 }) {
   const [timeElapsed, setTimeElapsed] = useState(0);
+  const [examSubmitted, setExamSubmitted] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -22,13 +23,11 @@ export default function TimeLeft({
     return () => clearInterval(interval);
   }, [startTime]);
 
-  const durationInSeconds = duration * 60;
-  const timeLeft = dayjs.duration(durationInSeconds - timeElapsed, "seconds");
-  const timeLeftString = `${Math.floor(
-    timeLeft.asHours() / 60
-  )}:${timeLeft.format("mm:ss")}`;
-  if (timeLeft.asSeconds() <= 0) {
+  const timeLeft = dayjs.duration(duration - timeElapsed, "seconds");
+  const timeLeftString = timeLeft.format("HH:mm:ss");
+  if (timeLeft.asSeconds() <= 0 && !examSubmitted) {
     submitExamMutation.mutate();
+    setExamSubmitted(true);
   }
 
   return <div>Time Left {timeLeftString}</div>;
