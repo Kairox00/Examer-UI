@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Exam } from "../../../types/Exam";
-import { useCreateExamAttempt } from "../api/create-exam-attempt";
+import { useStartExam } from "../api/start-exam";
 
 const StyledCard = styled(Card)(({ theme }) => ({
   width: "200px",
@@ -20,12 +20,17 @@ const StyledCard = styled(Card)(({ theme }) => ({
 
 const ExamCard = ({ exam }: { exam: Exam }) => {
   const navigate = useNavigate();
-  const examAttemptMutation = useCreateExamAttempt(
+  const examAttemptMutation = useStartExam(
     exam.id,
     "b86458b1-53fc-41fc-9acb-84f6710d12d9",
     {
-      onSuccess: () => {
-        navigate(`/exam-attempt/${exam.id}`);
+      onSuccess: (response: any) => {
+        navigate(`/exam-attempt/${exam.id}`, {
+          state: {
+            exam,
+            startedAt: response.data.startedAt,
+          },
+        });
       },
     }
   );

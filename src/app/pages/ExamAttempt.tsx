@@ -1,15 +1,19 @@
 import { Box, Stack } from "@mui/material";
 import { useEffect, useReducer, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useExamQuestions } from "../../features/exam-attempt/api/get-exam-questions";
 import { useSubmitExam } from "../../features/exam-attempt/api/submit-exam";
 import ActiveQuestion from "../../features/exam-attempt/components/ActiveQuestion";
 import QuestionsList from "../../features/exam-attempt/components/QuestionsList";
+import TimeLeft from "../../features/exam-attempt/components/TimeLeft";
 import { ExamAttemptContext } from "../../stores/ExamAttemptContext";
 import setAnswerReducer from "../../stores/setAnswerReducer";
 import { Question } from "../../types/Question";
 export default function ExamAttempt() {
   const { id: examId = "" } = useParams();
+  const {
+    state: { exam, startedAt },
+  } = useLocation();
   const [answers, dispatch] = useReducer(setAnswerReducer, {});
   const [activeQuestionIndex, setActiveQuestionIndex] = useState<number>(0);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -63,7 +67,12 @@ export default function ExamAttempt() {
         <Box width={"30%"}>
           <QuestionsList questions={questions} />
         </Box>
-        <Box width={"70%"}>
+        <Box width={"70%"} paddingRight={10}>
+          <TimeLeft
+            startTime={startedAt}
+            duration={exam.duration}
+            submitExamMutation={submitExamMutation}
+          />
           <ActiveQuestion
             question={questions![activeQuestionIndex]}
             handleNextQuestion={handleNextQuestion}
